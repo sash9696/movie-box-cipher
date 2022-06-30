@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./LandingPageContent.css";
 
 function LandingPageContent() {
@@ -15,7 +16,9 @@ function LandingPageContent() {
       </p>
       <div className="landingpagecontent_input">
         <input type="text" />
-        <button>GET STARTED</button>
+        <Link to="/sign-in">
+          <button className="landingpagecontent_button">GET STARTED</button>
+        </Link>
       </div>
     </div>
   );
