@@ -6,6 +6,7 @@
     flex-direction: column;
     justify-content: center;
     color: white;
+    z-index: -1;
 }
 .banner_contents{
     width: fit-content;

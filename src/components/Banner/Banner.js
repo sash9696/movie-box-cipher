@@ -1,32 +1,53 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import requests from "../../requests/Requests";
 import "./Banner.css";
 
 function Banner() {
+  const [movie, setMovie] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  async function fetchData() {
+    const request = await axios.get(
+      "https://api.themoviedb.org/3/trending/all/week?api_key=3653c65d49aec32d55c3b5dd49c7b021&language=en-US"
+    );
+    setMovie(
+      request.data.results[
+        Math.floor(Math.random() * request.data.results.length - 1)
+      ]
+    );
+    console.log(movie?.backdrop_path);
+  }
+
+  const truncate = (string, n) => {
+    return string?.length > n ? string.substr(0, n - 1) + "..." : string;
+  };
+
   return (
     <div
       className="banner"
       style={{
-        backgroundImage:
-          'url("http://s3-us-west-2.amazonaws.com/techvibes/wp-content/uploads/2017/04/24135159/Netflix-Background.jpg")',
+        backgroundImage: movie?.backdrop_path
+          ? `url(https://image.tmdb.org/t/p/original${movie?.backdrop_path})`
+          : 'url("http://s3-us-west-2.amazonaws.com/techvibes/wp-content/uploads/2017/04/24135159/Netflix-Background.jpg")',
+        // 'url("http://s3-us-west-2.amazonaws.com/techvibes/wp-content/uploads/2017/04/24135159/Netflix-Background.jpg")',
         backgroundPosition: "center center",
         backgroundSize: "cover",
       }}
     >
       <div className="banner_contents">
-        <h1> Movie Name </h1>
+        <h1>
+          {" "}
+          {movie?.original_name || movie?.original_title || movie?.title}{" "}
+        </h1>
         <div className="banner_buttons">
           <button>Play</button>
           <button>My List</button>
         </div>
-        <h3>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed malesuada
-          purus id augue bibendum, quis volutpat justo ultrices. Fusce eu nunc
-          non ante aliquet aliquet sed ut dui. Mauris laoreet sem sit amet erat
-          consequat, a auctor ipsum molestie. Vestibulum quis vehicula justo,
-          sit amet venenatis tortor. Vestibulum sit amet ullamcorper magna.
-          Pellentesque laoreet, felis sit amet semper eleifend, mauris neque
-          imperdiet odio, a efficitur nunc quam ac libero.
-        </h3>
+        <h3>{truncate(movie?.overview, 80)}</h3>
       </div>
     </div>
   );
