@@ -7,7 +7,7 @@ import Row from "../../components/Row/Row";
 function HomePage() {
   return (
     <div>
-      <Navbar showSignInButton={false} logout={true} />
+      <Navbar showSignInButton={false} logOut={true} />
       <Banner />
       <Row
         title="MOVIE BOX HITS"

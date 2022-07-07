@@ -3,8 +3,12 @@ import { useNavigate } from "react-router-dom";
 // import { Link } from "react-router-dom";
 import "./Navbar.css";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { useAuth0 } from "@auth0/auth0-react";
 
-function Navbar({ showSignInButton, logout, show }) {
+function Navbar({ showSignInButton, logOut, show }) {
+  const { user, loginWithRedirect } = useAuth0();
+
+  const { logout } = useAuth0();
   const navigate = useNavigate();
 
   const [dark, setDark] = useState(false);
@@ -27,7 +31,8 @@ function Navbar({ showSignInButton, logout, show }) {
   }, []);
 
   const goToSignInPage = () => {
-    navigate("/sign-in");
+    // navigate("/sign-in");
+    loginWithRedirect();
   };
   return (
     <div
@@ -51,10 +56,20 @@ function Navbar({ showSignInButton, logout, show }) {
         </button>
       )}
 
-      {logout && (
-        <p className="navbar_icon">
-          <AccountCircleIcon />
-        </p>
+      {logOut && (
+        <>
+          <h4 className="user_name"> {user && `Hi ${user.name}`} </h4>
+          <p
+            onClick={() =>
+              logout({
+                returnTo: window.location.origin,
+              })
+            }
+            className="navbar_icon"
+          >
+            <AccountCircleIcon />
+          </p>
+        </>
       )}
     </div>
   );
